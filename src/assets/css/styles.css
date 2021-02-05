@@ -1,0 +1,265 @@
+/* Don't want tailwindcss?
+   Simply remove the import
+   statement below and write
+   your CSS as normal! */
+
+/* @import './_tailwind';
+@import './components/progress-bar'; */
+.vueperslide__content-wrapper {
+  display: flex;
+  width: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45));
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-content: stretch !important;
+  align-items: flex-end !important;
+  -webkit-align-items: flex-end !important;
+  -moz-align-items: flex-end !important;
+}
+
+.vueperslide__content-wrapper .content-inner {
+  margin-right: 150px;
+  margin-left: 150px;
+  margin-bottom: 100px;
+  width: 50%;
+  justify-content: flex-start !important;
+  align-content: flex-start !important;
+  text-align: start;
+}
+
+.vueperslide__content-wrapper h2 {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.55);
+  padding: 0px 12px;
+  font-size: 20px;
+  text-align: start;
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.vueperslide__content-wrapper p {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.55);
+  padding: 8px 10px;
+  text-align: start;
+  font-style: italic;
+}
+
+.vueperslide--loading .vueperslide__content-wrapper {
+  display: none !important;
+}
+.posts .card .post-meta-thumb {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  max-height: 235px;
+  overflow: hidden;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -moz-flex-direction: column;
+  -ms-flex-direction: column;
+  -o-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  -o-justify-content: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.post-meta-thumb .sh-overlay-style1 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(71, 201, 229, 0.8);
+  font-size: 24px;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.post-meta-thumb .sh-table-full {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.sh-overlay-style1 .sh-overlay-item {
+  height: 60px;
+  transition: 0.5s all;
+  opacity: 0;
+  width: 50%;
+  position: relative;
+  text-align: center;
+  color: #fff;
+}
+.sh-table-cell {
+  display: table-cell;
+  vertical-align: middle;
+  float: none !important;
+}
+.sh-overlay-item:first-child > .sh-overlay-item-container {
+  transition: 0.5s all;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  -webkit-transform: translateY(-30px);
+  -ms-transform: translateY(-30px);
+  transform: translateY(-30px);
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  vertical-align: middle;
+  justify-content: center;
+}
+.sh-overlay-item:last-child > .sh-overlay-item-container {
+  transition: 0.5s all;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-30px);
+  -ms-transform: translateY(-30px);
+  transform: translateY(-30px);
+  margin-left: 10px;
+  margin-right: 10px;
+  text-align: center;
+  vertical-align: middle;
+  justify-content: center;
+}
+.sh-overlay-item-container i {
+  font-size: 24px;
+  line-height: 56px;
+  transition: 0.5s all;
+}
+
+.post-readmore {
+  padding: 12px 26px;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 0 solid #eaeaea;
+  display: block;
+  margin-top: 6px;
+}
+.post-readmore {
+  color: #0a0101 !important;
+  font-size: 13px;
+  text-transform: none !important;
+}
+.sh-columns > * {
+  float: left;
+}
+.sh-columns > :last-child {
+  float: right;
+}
+.sh-columns::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.posts .card .post-meta-thumb:hover > img {
+  -webkit-transform: translate3d(0, 0, 0) scale(1.1, 1.1);
+  transform: translate3d(0, 0, 0) scale(1.1, 1.1);
+}
+.posts .card .post-meta-thumb:hover > .sh-overlay-style1,
+.sh-overlay-style1:hover > .sh-table-full .sh-overlay-item {
+  opacity: 1;
+}
+.sh-overlay-style1 .sh-overlay-item:hover > .sh-overlay-item-container {
+  color: #222;
+  background-color: #fff;
+  width: 60px;
+  height: 60px;
+  box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
+}
+.navbar-custom.top-nav-collapse,
+.navbar-custom .dropdown-menu {
+  background-color: #fff;
+}
+.navbar-custom.top-nav-collapse .nav-item .nav-link,
+.navbar-custom.top-nav-collapse a,
+.dropdown-menu > .dropdown-item {
+  color: #464646 !important;
+  transition: 0.5s all;
+}
+.navbar-custom.top-nav-collapse .nav-item .nav-link:hover {
+  color: #4dd0e1;
+}
+.dropdown-menu > .dropdown-item {
+  display: block;
+  padding: 16px 26px;
+}
+.dropdown-menu > .dropdown-item:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+  transition: 0.5s all;
+}
+.navbar-custom.top-nav-collapse .nav-item .btn-outline-sm {
+  border-color: #464646 !important;
+}
+.navbar-custom.top-nav-collapse .dropdown-menu {
+  border: none;
+  top: 100%;
+  box-shadow: 0 0.375rem 0.375rem 0 rgba(45, 45, 45, 0.09);
+}
+.post-detail-content img {
+  max-width: 100% !important;
+}
+
+#lightcase-overlay {
+  width: 100%;
+  min-height: 100%;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#lightcase-overlay img {
+  max-height: 80%;
+  object-fit: contain;
+  -webkit-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  -o-box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+.lightcase-icon-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  bottom: auto;
+  margin: 0;
+  outline: none;
+  color: #fff;
+  font-size: 30px;
+  opacity: 0.8;
+}
+a[class*='lightcase-icon-']:hover {
+  color: white;
+  text-shadow: 0 0 15px white;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
