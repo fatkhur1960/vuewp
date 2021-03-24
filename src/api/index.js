@@ -1,7 +1,64 @@
 import axios from 'axios'
 import SETTINGS from '../settings'
 
+const headers = {
+  headers: {
+    'Content-Type': 'application/json;charset=UTF-8',
+    'Access-Control-Allow-Origin': '*',
+  },
+}
+
 export default {
+  authLogin(username, password, cb) {
+    axios
+      .post(
+        SETTINGS.API_AUTH_PATH + 'login',
+        {
+          username: username,
+          password: password,
+        },
+        headers,
+      )
+      .then((res) => cb(res.data))
+      .catch((e) => cb(e.response.data))
+  },
+
+  authRegister(payload, cb) {
+    axios
+      .post(SETTINGS.API_AUTH_PATH + 'register', payload, headers)
+      .then((res) => cb(res.data))
+      .catch((e) => {
+        cb(e.response.data)
+      })
+  },
+
+  oAuthRequest(provider, cb) {
+    axios
+      .get(SETTINGS.API_AUTH_PATH + `${provider}/request`)
+      .then((res) => cb(res.data))
+      .catch((e) => {
+        cb(e)
+      })
+  },
+
+  oAuthLogin(provider, payload, cb) {
+    axios
+      .post(SETTINGS.API_AUTH_PATH + `${provider}/login`, payload, headers)
+      .then((res) => cb(res.data))
+      .catch((e) => {
+        cb(e)
+      })
+  },
+
+  authResetPassword(payload, cb) {
+    axios
+      .post(SETTINGS.API_BASE_PATH + 'users/lost-password', payload, headers)
+      .then((res) => cb(res.data))
+      .catch((e) => {
+        cb(e.response.data)
+      })
+  },
+
   getCategories(cb) {
     axios
       .get(
@@ -12,7 +69,7 @@ export default {
         cb(response.data.filter((c) => c.name !== 'Uncategorized'))
       })
       .catch((e) => {
-        cb(e)
+        cb(e.response.data)
       })
   },
 
@@ -20,10 +77,10 @@ export default {
     axios
       .get(SETTINGS.API_MENU_BASE_PATH)
       .then((response) => {
-        cb(response.data.items)
+        cb(response.data)
       })
       .catch((e) => {
-        cb(e)
+        cb(e.response.data)
       })
   },
 
@@ -39,7 +96,7 @@ export default {
         cb(append)
       })
       .catch((e) => {
-        cb(e)
+        cb(e.response.data)
       })
   },
 
@@ -65,6 +122,17 @@ export default {
       })
   },
 
+  getWidget(id, cb) {
+    axios
+      .get(SETTINGS.API_WIDGET_PATH + 'get?id=' + id)
+      .then((response) => {
+        cb(response.data)
+      })
+      .catch((e) => {
+        cb(e)
+      })
+  },
+
   getPage(id, cb) {
     if (!Number.isInteger(id) || !id) return false
 
@@ -78,17 +146,31 @@ export default {
       })
   },
 
-  getPosts(limit = 5, filter = '', cb) {
+  getPosts(limit = 5, page = 1, filter = '', cb) {
     if (filter != '') {
       filter = `&filter${filter}`
     }
     axios
-      .get(SETTINGS.API_BASE_PATH + `posts?per_page=${limit}${filter}`)
+      .get(
+        SETTINGS.API_BASE_PATH +
+          `posts?per_page=${limit}&page=${page}${filter}`,
+      )
       .then((response) => {
         cb(response.data)
       })
       .catch((e) => {
-        cb(e)
+        cb(false)
+      })
+  },
+
+  getPostDetail(slug, cb) {
+    axios
+      .get(SETTINGS.API_BASE_PATH + 'posts?slug=' + slug)
+      .then((response) => {
+        cb(response.data[0])
+      })
+      .catch((e) => {
+        cb(false)
       })
   },
 
@@ -98,10 +180,10 @@ export default {
         SETTINGS.API_VALIDATOR_PATH + `${type}?${params.key}=${params.value}`,
       )
       .then((response) => {
-        cb(response.data.valid)
+        cb(response.data)
       })
       .catch((e) => {
-        cb(e)
+        cb(false)
       })
   },
 }

@@ -5,6 +5,8 @@ import SETTINGS from '../settings'
 
 // Components
 import Error404 from '../components/Error404.vue'
+import Auth from '../components/Auth/Auth.vue'
+import SocialAuth from '../components/Auth/SocialAuth.vue'
 import Home from '../components/Home.vue'
 import Post from '../components/Post/Post.vue'
 import Page from '../components/Page/Page.vue'
@@ -25,11 +27,29 @@ const router = new Router({
       },
     },
     {
+      path: '/auth/:action',
+      name: 'Auth',
+      component: Auth,
+      meta: {
+        title: 'Masuk',
+      },
+    },
+    {
+      path: '/auth/:provider/callback',
+      name: 'SocialAuth',
+      component: SocialAuth,
+      meta: {
+        title: 'Authorizing...',
+        clear: true,
+      },
+    },
+    {
       path: '/post/:postSlug',
       name: 'Post',
       component: Post,
       meta: {
         title: 'Post',
+        transitionName: 'slide',
       },
     },
     {
@@ -49,7 +69,7 @@ const router = new Router({
       },
     },
     {
-      path: '/author/:authSlug',
+      path: '/post/author/:authSlug',
       name: 'Authors',
       component: Authors,
       meta: {
@@ -57,7 +77,7 @@ const router = new Router({
       },
     },
     {
-      path: '/:pageId/:pageSlug',
+      path: '/p/:pageSlug',
       name: 'Page',
       component: Page,
       meta: {

@@ -1,0 +1,17 @@
+{
+    "name": "master/vuewp",
+    "authors": [
+        {
+            "name": "fatkhur1960",
+            "email": "fatkhuranonym@gmail.com"
+        }
+    ],
+    "require": {
+        "firebase/php-jwt": "^5.2",
+        "risan/oauth1": "^2.0"
+    },
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "^5.6",
+        "giacocorsiglia/wordpress-stubs": "^5.1"
+    }
+}

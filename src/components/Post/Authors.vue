@@ -1,164 +1,176 @@
 <template>
-  <div>
-    <template v-if="!postLoading">
-      <!-- Header -->
-      <header id="header" class="ex-header">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <h1>Penulis: {{ authName }}</h1>
-            </div>
-            <!-- end of col -->
+  <section>
+    <!-- Header -->
+    <header id="header" class="ex-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>Penulis: {{ authName }}</h1>
           </div>
-          <!-- end of row -->
+          <!-- end of col -->
         </div>
-        <!-- end of container -->
-      </header>
-      <!-- end of ex-header -->
-      <!-- end of header -->
-
-      <!-- Breadcrumbs -->
-      <div class="ex-basic-1">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="breadcrumbs">
-                <router-link to="/">Beranda</router-link>
-                <i class="fa fa-angle-double-right"></i>
-                <span>Penulis</span>
-                <i class="fa fa-angle-double-right"></i>
-                <span>{{ authName }}</span>
-              </div>
-              <!-- end of breadcrumbs -->
-            </div>
-            <!-- end of col -->
-          </div>
-          <!-- end of row -->
-        </div>
-        <!-- end of container -->
+        <!-- end of row -->
       </div>
-      <!-- end of ex-basic-1 -->
-      <!-- end of breadcrumbs -->
+      <!-- end of container -->
+    </header>
+    <!-- end of ex-header -->
+    <!-- end of header -->
 
-      <div class="container posts">
+    <!-- Breadcrumbs -->
+    <div class="ex-basic-1">
+      <div class="container">
         <div class="row">
           <div class="col-lg-12">
-            <PostItem v-for="post in posts" :key="post.id" :post="post" />
+            <div class="breadcrumbs">
+              <router-link to="/">Beranda</router-link>
+              <i class="fa fa-angle-double-right"></i>
+              <span>Penulis</span>
+              <i class="fa fa-angle-double-right"></i>
+              <span>{{ authName }}</span>
+            </div>
+            <!-- end of breadcrumbs -->
           </div>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of ex-basic-1 -->
+    <!-- end of breadcrumbs -->
 
+    <div class="container posts">
+      <div class="row">
+        <div class="col-lg-12">
+          <transition-group name="fade2">
+            <template v-if="recentPostsLoaded">
+              <PostItem
+                v-for="post in recentPosts()"
+                :key="post.id"
+                :post="post"
+              />
+            </template>
+            <template v-else>
+              <PostShimmer v-for="i in 6" :key="i" />
+            </template>
+          </transition-group>
+        </div>
+
+        <div class="col-lg-12">
+          <div class="text-center mt-2">
+            <div class="mb-3 mt-5" v-if="postsLoading">
+              <BottomLoader />
+            </div>
+            <button
+              v-else-if="
+                !hasReachedMax &&
+                !postsLoading &&
+                recentPostsLoaded &&
+                recentPosts().length > 0
+              "
+              class="btn-solid-reg"
+              @click.prevent="loadMore"
+            >
+              Lihat Lainnya
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Breadcrumbs -->
+    <div class="ex-basic-1">
+      <div class="container">
+        <div class="row">
           <div class="col-lg-12">
-            <div class="text-center mt-2">
-              <div class="mb-3" v-if="isLoading">
-                <BottomLoader />
-              </div>
-              <button
-                v-else-if="!reachedMax && !isLoading && posts.length > 0"
-                class="btn-solid-reg"
-                @click.prevent="loadMore"
-              >
-                Lihat Lainnya
-              </button>
+            <div class="breadcrumbs">
+              <router-link to="/">Beranda</router-link>
+              <i class="fa fa-angle-double-right"></i>
+              <span>Penulis</span>
+              <i class="fa fa-angle-double-right"></i>
+              <span>{{ authName }}</span>
             </div>
+            <!-- end of breadcrumbs -->
           </div>
+          <!-- end of col -->
         </div>
+        <!-- end of row -->
       </div>
-
-      <!-- Breadcrumbs -->
-      <div class="ex-basic-1">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="breadcrumbs">
-                <router-link to="/">Beranda</router-link>
-                <i class="fa fa-angle-double-right"></i>
-                <span>Penulis</span>
-                <i class="fa fa-angle-double-right"></i>
-                <span>{{ authName }}</span>
-              </div>
-              <!-- end of breadcrumbs -->
-            </div>
-            <!-- end of col -->
-          </div>
-          <!-- end of row -->
-        </div>
-        <!-- end of container -->
-      </div>
-      <!-- end of ex-basic-1 -->
-      <!-- end of breadcrumbs -->
-    </template>
-    <Loader v-else />
-  </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of ex-basic-1 -->
+    <!-- end of breadcrumbs -->
+  </section>
 </template>
 
 <script>
-import axios from 'axios'
+import { mapGetters } from 'vuex'
+import api from '../../api'
 import SETTINGS from '../../settings'
 
-import Loader from '../partials/Loader.vue'
 import BottomLoader from '../widgets/BottomLoader'
 import PostItem from '../widgets/PostItem'
-import Error404 from '../Error404'
+import PostShimmer from '../widgets/PostShimmer'
 
 export default {
   components: {
-    Loader,
     BottomLoader,
     PostItem,
+    PostShimmer,
   },
   data() {
     return {
-      posts: [],
       limit: 9,
       page: 1,
-      reachedMax: false,
-      bottomStatus: '',
-      isLoading: false,
-      postLoading: false,
       authName: '',
     }
   },
-  mounted() {
-    this.authName = this.$route.params.authName || ''
-  },
   methods: {
-    getPosts(page) {
-      axios
-        .get(
-          SETTINGS.API_BASE_PATH +
-            `posts?per_page=${this.limit}&page=${page}&filter[author_name]=${this.$route.params.authSlug}`,
-        )
-        .then((response) => {
-          const append = response.data
-          this.posts = this.posts.concat(append)
-          this.isLoading = false
-          this.postLoading = false
-        })
-        .catch((e) => {
-          this.reachedMax = true
-          this.isLoading = false
-          this.postLoading = false
-          console.error(e)
-        })
-    },
     loadMore() {
-      this.isLoading = true
-      if (!this.reachedMax) {
+      if (!this.hasReachedMax) {
         this.page += 1
-        this.getPosts(this.page)
+        this.$store.dispatch('loadMorePosts', {
+          limit: this.limit,
+          page: this.page,
+          filter: `[author_name]=${this.$route.params.authSlug}`,
+        })
       }
     },
   },
+  watch: {
+    authName: function (newName, oldName) {
+      if (newName) {
+        this.$route.meta.title = `${this.$route.meta.title}: ${newName} - ${SETTINGS.SITE_NAME}`
+        // Add a temporary query parameter.
+        this.$router.replace({ query: { temp: Date.now() } })
+        // Remove the temporary query parameter.
+        this.$router.replace({ query: { temp: undefined } })
+      }
+    },
+  },
+  computed: {
+    ...mapGetters({
+      recentPosts: 'recentPosts',
+      recentPostsLoaded: 'recentPostsLoaded',
+      postsLoading: 'postsLoading',
+      hasReachedMax: 'hasReachedMax',
+    }),
+  },
   beforeMount() {
-    this.isLoading = true
-    this.postLoading = true
+    this.$store.dispatch('init')
     api.validator(
       'author',
       { key: 'nickname', value: this.$route.params.authSlug },
-      (valid) => {
-        if (!valid) {
+      (res) => {
+        if (!res.valid) {
           this.$router.replace({ name: 'Error404' })
         }
-        this.getPosts(this.page)
+        this.authName = this.$route.params.authName || res.data
+        this.$store.dispatch('getPosts', {
+          limit: this.limit,
+          page: this.page,
+          filter: `[author_name]=${this.$route.params.authSlug}`,
+        })
       },
     )
   },

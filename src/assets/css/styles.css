@@ -5,6 +5,7 @@
 
 /* @import './_tailwind';
 @import './components/progress-bar'; */
+
 .vueperslide__content-wrapper {
   display: flex;
   width: 100%;
@@ -184,6 +185,7 @@
   height: 60px;
   box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.2);
 }
+
 .navbar-custom.top-nav-collapse,
 .navbar-custom .dropdown-menu {
   background-color: #fff;
@@ -195,7 +197,7 @@
   transition: 0.5s all;
 }
 .navbar-custom.top-nav-collapse .nav-item .nav-link:hover {
-  color: #4dd0e1;
+  color: #148AB6;
 }
 .dropdown-menu > .dropdown-item {
   display: block;
@@ -256,10 +258,209 @@ a[class*='lightcase-icon-']:hover {
   color: white;
   text-shadow: 0 0 15px white;
 }
+
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition-duration: 0.6s;
+  transition-property: height, opacity;
+  transition-timing-function: ease;
+  overflow: hidden;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter,
+.fade-leave-active {
   opacity: 0;
+}
+
+.fade2-move {
+  transition: all 600ms ease-in-out 50ms;
+}
+.fade2-enter-active {
+  transition: all 300ms ease-out;
+}
+.fade2-leave-active {
+  transition: all 200ms ease-in;
+  position: absolute;
+  z-index: 0;
+}
+.fade2-enter,
+.fade2-leave-to {
+  opacity: 0;
+}
+.fade2-enter {
+  transform: scale(0.9);
+}
+
+.shimmer-list > div {
+  margin: 0px 5px;
+}
+
+.zoom-enter-active,
+.zoom-leave-active {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: zoom;
+}
+
+.zoom-leave-active {
+  animation-direction: reverse;
+}
+
+@keyframes zoom {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+body {
+  overflow-x: hidden;
+}
+.posts .card {
+  border-radius: 5px;
+}
+
+@media screen and (min-width: 1024px) {
+  .posts .card {
+    width: 30.5%;
+  }
+  .navbar-custom .navbar-toggler {
+    color: #555;
+  }
+  .vueperslide__content-wrapper .content-inner {
+    margin: 60px;
+    display: block;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 992px) {
+  .ex-header {
+    padding-top: 6.5rem;
+    padding-bottom: 3rem;
+  }
+  .posts .card {
+    width: 45.5%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .container {
+    padding: 0px;
+  }
+  .navbar-custom .navbar-toggler {
+    color: #555 !important;
+  }
+  .page--home {
+    margin-top: 48px;
+  }
+  .vueperslide__content-wrapper .content-inner {
+    margin: 50px;
+    display: block;
+    width: 100%;
+  }
+  .navbar-custom {
+    background-color: #fff;
+  }
+  .navbar-custom a {
+    color: #464646 !important;
+  }
+  .ex-basic-1 {
+    padding: 0.8rem;
+  }
+  .ex-basic-1 .breadcrumbs {
+    margin: 0px;
+  }
+  .container.posts {
+    padding-top: 1.62rem;
+    padding-bottom: 1.55rem;
+  }
+  .post-detail-thumbnail {
+    max-height: 260px;
+    overflow: hidden;
+  }
+  .post-detail-thumbnail img {
+    height: 260px;
+  }
+  .post-detail {
+    padding-top: 0px !important;
+    margin-top: -35px;
+  }
+}
+
+@media screen and (max-width: 592px) {
+  .container.posts {
+    padding-top: 1.32rem;
+    padding-bottom: 1.25rem;
+  }
+  .ex-basic-1 {
+    padding: 0.8rem;
+  }
+  .ex-basic-1 .breadcrumbs {
+    margin: 0px;
+  }
+  .page--home {
+    margin-top: 48px;
+  }
+  .ex-header {
+    padding-top: 5.5rem;
+    padding-bottom: 2rem;
+  }
+  .vueperslide__content-wrapper {
+    display: none !important;
+  }
+  .posts .card {
+    width: 94.2%;
+  }
+  .navbar-custom .navbar-toggler {
+    color: #555 !important;
+  }
+  .navbar-custom {
+    background-color: #fff;
+  }
+  .navbar-custom a {
+    color: #464646 !important;
+  }
+  .post-detail-thumbnail {
+    max-height: 220px;
+    overflow: hidden;
+  }
+  .post-detail-thumbnail img {
+    height: 220px;
+  }
+  .post-detail {
+    padding-top: 0px !important;
+    margin-top: -25px;
+  }
+}
+
+.navbar-light .nav-item .nav-link {
+  color: #464646 !important;
+}
+.navbar-light .nav-item .btn-outline-sm {
+  color: #464646 !important;
+  border-color: #464646 !important;
+}
+.navbar-custom .nav-item .router-link-exact-active,
+.navbar-custom .nav-item .router-link-active,
+.navbar-custom.top-nav-collapse .nav-item a.router-link-active,
+.navbar-custom.top-nav-collapse .nav-item a.router-link-exact-active {
+  color: #148AB6 !important;
+}
+.navbar-light .nav-item .btn-outline-sm.router-link-exact-active,
+.navbar-light .nav-item .btn-outline-sm.router-link-active {
+  border-color: #148AB6 !important;
+}
+
+.vue-notification { 
+  margin-top: 30px !important;
+  margin-right: 30px !important;
+}
+
+body.admin-bar .fixed-top {
+  position: fixed;
+  top: 32px;
 }

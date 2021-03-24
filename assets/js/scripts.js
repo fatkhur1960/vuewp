@@ -37,7 +37,8 @@
         .stop()
         .animate(
           {
-            scrollTop: $($anchor.attr('href').replaceAll('/', '')).offset().top - 40,
+            scrollTop:
+              $($anchor.attr('href').replaceAll('/', '')).offset().top - 40,
           },
           600,
           'easeInOutExpo',
@@ -48,8 +49,20 @@
 
   // closes the responsive menu on menu item click
   $('.navbar-nav li a').on('click', function (event) {
-    if (!$(this).parent().hasClass('dropdown'))
+    if (!$(this).parent().hasClass('dropdown')) {
       $('.navbar-collapse').collapse('hide')
+    }
+  })
+
+  $(function () {
+    $('input, select').on('focus', function () {
+      $(this).parent().find('.input-group-text').css('border-color', '#80bdff')
+      $(this).parent().find('.custom-select').css('border-color', '#80bdff')
+    })
+    $('input, select').on('blur', function () {
+      $(this).parent().find('.input-group-text').css('border-color', '#ced4da')
+      $(this).parent().find('.custom-select').css('border-color', '#ced4da')
+    })
   })
 
   /* Image Slider - Swiper */

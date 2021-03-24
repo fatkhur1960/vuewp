@@ -9,16 +9,18 @@ import post from './modules/post'
 import page from './modules/page'
 import menu from './modules/menu'
 import slide from './modules/slide'
+import widget from './modules/widget'
 import categories from './modules/categories'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
 
 let localStorage = createPersist({
-    namespace: 'YOUR_APP_NAMESPACE',
-    initialState: {},
-    expires: 1.21e+9 // Two Weeks
+  namespace: 'YOUR_APP_NAMESPACE',
+  initialState: {},
+  expires: 1.21e9, // Two Weeks
 })
 
 export default new Vuex.Store({
@@ -32,7 +34,9 @@ export default new Vuex.Store({
     categories,
     menu,
     slide,
+    widget,
+    auth,
   },
   strict: debug,
-  plugins: [localStorage]
+  plugins: [localStorage],
 })

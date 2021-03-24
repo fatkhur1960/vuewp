@@ -1,22 +1,26 @@
 <template>
-  <div id="news" class="posts">
+  <div :id="id" class="posts">
     <div class="container">
       <div class="row" v-if="isHome">
         <div class="col-lg-12">
-          <div class="above-heading">BERITA</div>
-          <h2 class="h2-heading">Berita Terbaru</h2>
+          <div class="above-heading">{{ title }}</div>
+          <h2 class="h2-heading">{{ subTitle }}</h2>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-12">
-          <div v-if="recentPostsLoaded">
-            <PostItem
-              v-for="post in recentPosts(limit)"
-              :key="post.id"
-              :post="post"
-            />
-          </div>
-          <div v-else>Loading...</div>
+          <transition-group name="fade2">
+            <template v-if="recentPostsLoaded">
+              <PostItem
+                v-for="post in recentPosts()"
+                :key="post.id"
+                :post="post"
+              />
+            </template>
+            <template v-else>
+              <PostShimmer v-for="i in 6" :key="i" />
+            </template>
+          </transition-group>
         </div>
         <div class="col-lg-12">
           <div class="text-center mt-2">
@@ -38,9 +42,22 @@
 <script>
 import { mapGetters } from 'vuex'
 import PostItem from './PostItem'
+import PostShimmer from './PostShimmer'
 
 export default {
   props: {
+    id: {
+      type: String,
+      default: 'news',
+    },
+    title: {
+      type: String,
+      default: 'BERITA',
+    },
+    subTitle: {
+      type: String,
+      default: 'Berita Terbaru',
+    },
     limit: {
       type: Number,
       default: 10,
@@ -55,6 +72,7 @@ export default {
   },
   components: {
     PostItem,
+    PostShimmer,
   },
   computed: {
     ...mapGetters({

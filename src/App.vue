@@ -1,6 +1,6 @@
 <template>
   <div id="my-app" class="flex flex-col md:min-h-screen">
-    <app-header />
+    <app-header v-if="!$route.meta.clear" />
 
     <transition
       name="loader-animation"
@@ -10,13 +10,11 @@
       <progress-bar :show-loader="showLoader" :loader-style="loaderStyle" />
     </transition>
 
-    <transition name="page-transition" mode="out-in" appear>
-      <div class="site-content mx-auto py-16 flex-1 px-10 md:px-0 max-w-2xl">
-        <router-view :key="$route.fullPath"></router-view>
-      </div>
-    </transition>
+    <PageTransition>
+      <router-view :key="$route.fullPath"></router-view>
+    </PageTransition>
 
-    <app-footer />
+    <app-footer v-if="!$route.meta.clear" />
   </div>
 </template>
 
@@ -25,6 +23,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex'
 import Header from './components/partials/Header.vue'
 import Footer from './components/partials/Footer.vue'
 import ProgressBar from './components/partials/ProgressBar.vue'
+import PageTransition from './components/partials/PageTransition.vue'
 
 export default {
   data() {
@@ -46,6 +45,7 @@ export default {
     appHeader: Header,
     appFooter: Footer,
     ProgressBar,
+    PageTransition,
   },
 
   watch: {
@@ -55,7 +55,7 @@ export default {
         let self = this
         setTimeout(function () {
           self.showLoader = false
-        }, 2000)
+        }, 1000)
       }
     },
   },

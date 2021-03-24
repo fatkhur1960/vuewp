@@ -34,7 +34,7 @@
           <div class="image-container">
             <img
               class="img-fluid"
-              src="http://localhost:8080/wp-content/uploads/2021/02/ezgif-1-43bdd7c671d4.png"
+              src="../../assets/images/satir.png"
               alt="alternative"
             />
           </div>
@@ -49,3 +49,8 @@
   <!-- end of basic-1 -->
   <!-- end of details -->
 </template>
+<script>
+export default {
+  
+}
+</script>

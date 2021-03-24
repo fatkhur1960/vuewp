@@ -17,60 +17,28 @@
       <div class="row">
         <div class="col-lg-12">
           <!-- Card -->
-          <div class="card">
-            <div class="card-image">
-              <img
-                class="img-fluid"
-                src="../../assets/images/description-1.png"
-                alt="alternative"
-              />
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">Lists Builder</h4>
-              <p>
-                It's very easy to start creating email lists for your marketing
-                actions. Just create your Tivo account
-              </p>
-            </div>
-          </div>
-          <!-- end of card -->
-
-          <!-- Card -->
-          <div class="card">
-            <div class="card-image">
-              <img
-                class="img-fluid"
-                src="../../assets/images/description-2.png"
-                alt="alternative"
-              />
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">Campaign Tracker</h4>
-              <p>
-                Campaigns is a feature we've developed since the beginning
-                because it's at the core of Tivo's functionalities
-              </p>
-            </div>
-          </div>
-          <!-- end of card -->
-
-          <!-- Card -->
-          <div class="card">
-            <div class="card-image">
-              <img
-                class="img-fluid"
-                src="../../assets/images/description-3.png"
-                alt="alternative"
-              />
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">Analytics Tool</h4>
-              <p>
-                Tivo collects customer data in order to help you analyse
-                different situations and take required action
-              </p>
-            </div>
-          </div>
+          <transition-group name="fade2">
+            <template v-if="widgetItemsLoaded">
+              <div
+                class="card"
+                v-for="(item, index) in widgetItems()"
+                :key="index"
+              >
+                <div class="card-image">
+                  <img class="img-fluid" :src="item.image" alt="alternative" />
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">{{ item.title }}</h4>
+                  <p>
+                    {{ item.content }}
+                  </p>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <ProgramShimmer v-for="i in 3" :key="i" />
+            </template>
+          </transition-group>
           <!-- end of card -->
         </div>
         <!-- end of col -->
@@ -82,3 +50,20 @@
   <!-- end of cards-1 -->
   <!-- end of description -->
 </template>
+<script>
+import { mapGetters } from 'vuex'
+import ProgramShimmer from './ProgramShimmer'
+
+export default {
+  components: { ProgramShimmer },
+  computed: {
+    ...mapGetters({
+      widgetItems: 'widgetItems',
+      widgetItemsLoaded: 'widgetItemsLoaded',
+    }),
+  },
+  beforeMount() {
+    this.$store.dispatch('getWidget', { id: 'proker' })
+  },
+}
+</script>

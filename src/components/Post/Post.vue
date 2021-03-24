@@ -1,98 +1,153 @@
 <template>
-  <div>
-    <article v-if="post">
-      <!-- Header -->
-      <header id="header" class="ex-header">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <h1>{{ post.title.rendered }}</h1>
-              <div class="post-meta mt-3">
-                <DateFormatted :dateInput="post.date" />
-                <Author :author="post.author_meta" />
-                <Category :categories="post.post_categories" />
-              </div>
-              <div class="share-button mt-3" id="share-network-list">
-                <ShareNetwork
-                  v-for="s in share"
-                  :key="s.key"
-                  :network="s.key"
-                  :url="currentUrl"
-                  :title="`${post.title.rendered} | ${siteName}`"
-                  :description="post.excerpt.rendered | truncate(120)"
+  <section>
+    <!-- Header -->
+    <header id="header" class="ex-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <transition-group name="zoom">
+              <template v-if="!postDetailLoading">
+                <h1 key="postTitle">{{ postDetail.title.rendered }}</h1>
+                <div key="postMeta" class="post-meta mt-3">
+                  <DateFormatted :dateInput="postDetail.date" />
+                  <Author :author="postDetail.author_meta" />
+                  <Category :categories="postDetail.post_categories" />
+                </div>
+                <div
+                  key="share"
+                  class="share-button mt-3"
+                  id="share-network-list"
                 >
-                  <i :class="`fab fah fa-lg fa-${s.key}`"></i>
-                  <span>{{ s.value }}</span>
-                </ShareNetwork>
-              </div>
-            </div>
-            <!-- end of col -->
-          </div>
-          <!-- end of row -->
-        </div>
-        <!-- end of container -->
-      </header>
-      <!-- end of ex-header -->
-      <!-- end of header -->
-
-      <div class="ex-basic-2 post-detail mb-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="row">
-                <div class="col-lg-8">
-                  <div class="post-detail-thumbnail mb-5">
-                    <img v-lazy="post.fimg_url" />
+                  <ShareNetwork
+                    v-for="s in share"
+                    :key="s.key"
+                    :network="s.key"
+                    :url="currentUrl"
+                    :title="`${postDetail.title.rendered} | ${siteName}`"
+                    :description="postDetail.excerpt.rendered | truncate(120)"
+                  >
+                    <i :class="`fab fah fa-lg fa-${s.key}`"></i>
+                    <span>{{ s.value }}</span>
+                  </ShareNetwork>
+                </div>
+              </template>
+              <template v-else>
+                <div key="shimmer1">
+                  <Shimmer width="60%" height="30px" radius="5" />
+                  <Shimmer width="45%" height="30px" radius="5" />
+                  <div class="mt-3 shimmer-list">
+                    <Shimmer
+                      v-for="i in 3"
+                      :key="i"
+                      width="8%"
+                      height="15px"
+                      radius="5"
+                    />
                   </div>
+                  <div class="mt-3 shimmer-list">
+                    <Shimmer
+                      v-for="i in 4"
+                      :key="i"
+                      width="10%"
+                      height="25px"
+                      radius="5"
+                    />
+                  </div>
+                </div>
+              </template>
+            </transition-group>
+          </div>
+          <!-- end of col -->
+        </div>
+        <!-- end of row -->
+      </div>
+      <!-- end of container -->
+    </header>
+    <!-- end of ex-header -->
+    <!-- end of header -->
+
+    <div class="ex-basic-2 post-detail mb-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="post-detail-thumbnail mb-5">
+                  <transition name="zoom">
+                    <img
+                      v-if="!postDetailLoading"
+                      v-lazy="postDetail.fimg_url"
+                    />
+                    <Shimmer v-else width="100%" height="430px" />
+                  </transition>
+                </div>
+                <template v-if="!postDetailLoading">
                   <div class="text-container mb-5">
                     <div
                       class="post-detail-content"
-                      v-html="post.content.rendered"
+                      v-html="postDetail.content.rendered"
                     ></div>
                   </div>
 
                   <hr />
 
                   <Disqus shortname="pelajarnuwonosobo" />
-                </div>
-                <div class="col-lg-4">
-                  <PostWidget filter="[category_name]=news" />
-                </div>
+                </template>
+                <template v-else>
+                  <Shimmer height="20px" width="100%" radius="5" />
+                  <Shimmer height="20px" width="80%" radius="5" />
+                  <Shimmer height="20px" width="30%" radius="5" />
+                  <Shimmer
+                    v-for="i in 3"
+                    :key="`a-${i}`"
+                    height="15px"
+                    radius="5"
+                    :width="`${100 - i * 3}%`"
+                  />
+                  <Shimmer
+                    v-for="i in 4"
+                    :key="`b-${i}`"
+                    height="15px"
+                    radius="5"
+                    :width="`${100 - i * 3}%`"
+                  />
+                </template>
+              </div>
+              <div class="col-lg-4">
+                <PostWidget filter="[category_name]=news" />
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Breadcrumbs -->
-      <div class="ex-basic-1">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="breadcrumbs">
-                <router-link to="/">Beranda</router-link>
-                <i class="fa fa-angle-double-right"></i>
-                <span>{{ post.title.rendered }}</span>
-              </div>
-              <!-- end of breadcrumbs -->
+    <!-- Breadcrumbs -->
+    <div class="ex-basic-1">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="breadcrumbs">
+              <router-link to="/">Beranda</router-link>
+              <i class="fa fa-angle-double-right"></i>
+              <span>{{ postDetail.title.rendered }}</span>
             </div>
-            <!-- end of col -->
+            <!-- end of breadcrumbs -->
           </div>
-          <!-- end of row -->
+          <!-- end of col -->
         </div>
-        <!-- end of container -->
+        <!-- end of row -->
       </div>
-      <!-- end of ex-basic-1 -->
-      <!-- end of breadcrumbs -->
-    </article>
-    <Loader v-else />
-  </div>
+      <!-- end of container -->
+    </div>
+    <!-- end of ex-basic-1 -->
+    <!-- end of breadcrumbs -->
+  </section>
 </template>
 
 <script>
-import axios from 'axios'
 import api from '../../api'
-import Loader from '../partials/Loader.vue'
+import Shimmer from '../widgets/Shimmer.vue'
 import { mapGetters } from 'vuex'
 import SETTINGS from '../../settings'
 import { Disqus } from 'vue-disqus'
@@ -102,12 +157,8 @@ import Category from '../widgets/Category'
 import PostWidget from '../widgets/RecentPostsWidget'
 
 export default {
-  title() {
-    this.getTitle()
-  },
   data() {
     return {
-      post: false,
       share: [
         { key: 'twitter', value: 'Twitter' },
         { key: 'facebook', value: 'Facebook' },
@@ -118,57 +169,42 @@ export default {
       currentUrl: '',
     }
   },
-  mounted() {
-    this.siteName = SETTINGS.SITE_NAME
-    this.currentUrl = window.location.href
-  },
-  computed: {},
-  filters: {
-    parseDate: (input) => {
-      return moment.utc(new Date(input)).format('D MMM, YYYY')
-    },
+  computed: {
+    ...mapGetters({
+      postDetail: 'postDetail',
+      postDetailLoading: 'postDetailLoading',
+    }),
   },
   beforeMount() {
+    this.$store.dispatch('init')
+    this.siteName = SETTINGS.SITE_NAME
+    this.currentUrl = window.location.href
     api.validator(
       'post',
       { key: 'slug', value: this.$route.params.postSlug },
-      (valid) => {
-        if (!valid) {
+      (res) => {
+        if (!res.valid) {
           this.$router.replace({ name: 'Error404' })
         }
-        this.getPost()
+        this.$store.dispatch('getPostDetail', {
+          slug: this.$route.params.postSlug,
+        })
       },
     )
   },
   watch: {
-    post: function (newPost, oldPost) {
-      this.$route.meta.title = newPost.title.rendered
-      // Add a temporary query parameter.
-      this.$router.replace({ query: { temp: Date.now() } })
-      // Remove the temporary query parameter.
-      this.$router.replace({ query: { temp: undefined } })
+    postDetail: function (newPost, oldPost) {
+      if (newPost) {
+        this.$route.meta.title = newPost.title.rendered
+        // Add a temporary query parameter.
+        this.$router.replace({ query: { temp: Date.now() } })
+        // Remove the temporary query parameter.
+        this.$router.replace({ query: { temp: undefined } })
+      }
     },
   },
-  methods: {
-    getTitle() {
-      return `${SETTINGS.SITE_NAME} - Semua Berita`
-    },
-    getPost: function () {
-      axios
-        .get(
-          SETTINGS.API_BASE_PATH + 'posts?slug=' + this.$route.params.postSlug,
-        )
-        .then((response) => {
-          this.post = response.data[0]
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    },
-  },
-
   components: {
-    Loader,
+    Shimmer,
     Author,
     DateFormatted,
     Category,

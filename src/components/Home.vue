@@ -6,6 +6,7 @@
         :autoplay="true"
         :lazy="true"
         :lazyLoad="true"
+        :arrows="false"
         :infinite="true"
         :slideRatio="1 / 2"
         :touchable="false"

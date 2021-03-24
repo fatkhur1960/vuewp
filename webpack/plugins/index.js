@@ -3,7 +3,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 plugins = [
-  require('./stylelint'),
+  // require('./stylelint'),
   new webpack.ProvidePlugin({
     throttle: 'lodash.throttle',
   }),
@@ -14,7 +14,7 @@ plugins = [
 
 if (process.env.NODE_ENV === 'development') {
   plugins.push(require('./browser-sync'));
-  plugins.push(require('./stylelint'));
+  // plugins.push(require('./stylelint'));
 }
 
 module.exports = plugins;
